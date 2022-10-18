@@ -7,7 +7,7 @@ import torch
 import pickle
 from sklearn import preprocessing
 from utils import loading_cv_data, cca_metric_derivative, AttentionFusion, TransformLayers, DCCA_AM
-from utils import Config
+from utils import batch_size, emotion_categories, epochs, eeg_input_dim, eye_input_dim, output_dim,  learning_rate
 
 def create_log_dir():
     flag1, flag2 = os.path.exists('./logs'), os.path.exists('./trained_model')
