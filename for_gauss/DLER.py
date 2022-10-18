@@ -4,6 +4,7 @@ import argparse
 import logging
 from matplotlib.pyplot import flag 
 import torch 
+import torch.nn as nn
 import pickle
 from sklearn import preprocessing
 from utils import loading_cv_data, cca_metric_derivative, AttentionFusion, TransformLayers, DCCA_AM
