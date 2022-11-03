@@ -17,7 +17,9 @@ def create_log_dir():
     if not flag2:
         os.makedirs('./trained_model')
 
-def run_nn(eeg_directory, eye_directory):
+def run_nn(eeg_directory, eye_directory, lr=None):
+    if lr != None:
+        learning_rate = lr
     cv =3
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print('Using:', device)
@@ -152,10 +154,17 @@ if __name__ == "__main__":
         "--p2",
         required=True,
         help="Path to the directory with the Eye feature files")
+    parser.add_argument(
+        '--lr',
+        default=False,
+        required=False, 
+        type=float,
+        help="Enter a valid learning rate for the network")
 
     arg = parser.parse_args()
     eeg_directory = arg.p1
     eye_directory = arg.p2
+    lr = arg.lr
 
     create_log_dir()
-    run_nn(eeg_directory, eye_directory)
+    run_nn(eeg_directory, eye_directory, lr)
