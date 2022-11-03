@@ -31,7 +31,7 @@ def run_nn(eeg_directory, eye_directory, lr=None):
     eye_dir = eye_directory
     file_list = os.listdir(eeg_dir)
     file_list.sort()
-    time_ = time.strftime("%Y%m%d-%H%M%S")
+    time_ = time.strftime("%Y%m%d_%H%M%S")
 
     path_log = './logs/' + time_ + '/cv3.log'
     path_trained_model = './trained_model/' + time_ + '/'
