@@ -7,6 +7,7 @@ import torch
 import torch.nn as nn
 import pickle
 from sklearn import preprocessing
+import time
 from utils import loading_cv_data, cca_metric_derivative, AttentionFusion, TransformLayers, DCCA_AM
 from utils import batch_size, emotion_categories, epochs, eeg_input_dim, eye_input_dim, output_dim,  learning_rate
 
@@ -27,9 +28,14 @@ def run_nn(eeg_directory, eye_directory, lr=None):
     eye_dir = eye_directory
     file_list = os.listdir(eeg_dir)
     file_list.sort()
+    time_ = time.strftime("%Y%m%d-%H%M%S")
+
+    path_log = './logs/' + time_ + '/cv3.log'
+    path_trained_model = './trained_model/' + time_ + '/'
     for f_id in file_list:
+        
         type(f_id)
-        logging.basicConfig(filename='./logs/cv3.log', level=logging.DEBUG)
+        logging.basicConfig(filename=path_log, level=logging.DEBUG)
         logging.debug('{}'.format(f_id))
         logging.debug('Task-Epoch-CCALoss-PredicLoss-PredicAcc')
         if f_id.endswith('.npz'):
@@ -140,7 +146,7 @@ def run_nn(eeg_directory, eye_directory, lr=None):
                         logging.info('\tTrain\t{}\t{}\t{}\t{}'.format(epoch, cca_loss_train, predict_loss_train.data, accuracy_train))
                         logging.info('\tTest\t{}\t{}\t{}\t{}'.format(epoch, cca_loss_test, predict_loss_test.data, accuracy_test))
 
-                    pickle.dump(best_test_res, open( os.path.join('./trained_model/', f_id[:-8]+'_'+str(hyper_choose)), 'wb'  ))
+                    pickle.dump(best_test_res, open( os.path.join(path_trained_model, f_id[:-8]+'_'+str(hyper_choose)), 'wb'  ))
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
