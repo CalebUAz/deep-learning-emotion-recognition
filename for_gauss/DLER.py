@@ -13,7 +13,7 @@ from utils import batch_size, emotion_categories, epochs, eeg_input_dim, eye_inp
 
 def create_log_dir():
     time_ = time.strftime("%Y%m%d_%H%M%S")
-    path_log = './logs/' + time_ + '/cv3.log'
+    path_log = './logs/' + time_
     path_trained_model = './trained_model/' + time_ + '/'
     flag1, flag2 = os.path.exists(path_log), os.path.exists(path_trained_model)
     if not flag1:
@@ -33,12 +33,12 @@ def run_nn(eeg_directory, eye_directory, lr=None):
     file_list.sort()
     time_ = time.strftime("%Y%m%d_%H%M%S")
 
-    path_log = './logs/' + time_ + '/cv3.log'
+    path_log = './logs/' + time_
     path_trained_model = './trained_model/' + time_ + '/'
     for f_id in file_list:
         
         type(f_id)
-        logging.basicConfig(filename=path_log, level=logging.DEBUG)
+        logging.basicConfig(filename=path_log+ '/cv3.log', level=logging.DEBUG)
         logging.debug('{}'.format(f_id))
         logging.debug('Task-Epoch-CCALoss-PredicLoss-PredicAcc')
         if f_id.endswith('.npz'):
