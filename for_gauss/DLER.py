@@ -12,11 +12,14 @@ from utils import loading_cv_data, cca_metric_derivative, AttentionFusion, Trans
 from utils import batch_size, emotion_categories, epochs, eeg_input_dim, eye_input_dim, output_dim,  learning_rate
 
 def create_log_dir():
-    flag1, flag2 = os.path.exists('./logs'), os.path.exists('./trained_model')
+    time_ = time.strftime("%Y%m%d-%H%M%S")
+    path_log = './logs/' + time_ + '/cv3.log'
+    path_trained_model = './trained_model/' + time_ + '/'
+    flag1, flag2 = os.path.exists(path_log), os.path.exists(path_trained_model)
     if not flag1:
-        os.makedirs('./logs')
+        os.makedirs(path_log)
     if not flag2:
-        os.makedirs('./trained_model')
+        os.makedirs(path_trained_model)
 
 def run_nn(eeg_directory, eye_directory, lr=None):
     if lr != None:
