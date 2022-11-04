@@ -10,6 +10,7 @@ from sklearn import preprocessing
 import time
 from utils import loading_cv_data, cca_metric_derivative, AttentionFusion, TransformLayers, DCCA_AM
 from utils import batch_size, emotion_categories, epochs, eeg_input_dim, eye_input_dim, output_dim,  learning_rate
+from utils import EarlyStopping
 
 def create_log_dir():
     time_ = time.strftime("%Y%m%d_%H%M%S")
@@ -35,6 +36,10 @@ def run_nn(eeg_directory, eye_directory, lr=None):
 
     path_log = './logs/' + time_
     path_trained_model = './trained_model/' + time_ + '/'
+
+    train_loss = []
+    validation_loss = []
+    i = 0
     for f_id in file_list:
         
         type(f_id)
@@ -132,7 +137,16 @@ def run_nn(eeg_directory, eye_directory, lr=None):
                         predict_out_test, cca_loss_test, output_1_test, output_2_test, _, _, fused_tensor_test, attention_weight_test  = mymodel(test_eeg, test_eye)
                         predict_loss_test = class_loss_func(predict_out_test, test_label)
                         accuracy_test = np.sum(np.argmax(predict_out_test.detach().cpu().numpy(), axis=1) == test_label.detach().cpu().numpy()) / predict_out_test.shape[0]
-
+                        
+                        train_loss.append(predict_loss_train)
+                        validation_loss.append(predict_loss_test)
+                        early_stopping = EarlyStopping(tolerance=5, min_delta=10)
+                        early_stopping(predict_loss_train, predict_loss_test)
+                        i += 1 
+                        if early_stopping.early_stop:
+                            print("We are at epoch:", i)
+                            break
+                        
                         if accuracy_test > best_test_res['acc']:
                             best_test_res['acc'] = accuracy_test
                             best_test_res['layer_size'] = layer_sizes
