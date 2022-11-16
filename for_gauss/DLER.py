@@ -26,7 +26,7 @@ def run_nn(eeg_directory, eye_directory, lr=None):
     if lr != None:
         learning_rate = lr
     cv = 3
-    device = torch.device("cuda:1" if torch.cuda.is_available() else "cpu")
+    device = torch.device("cuda:0,1" if torch.cuda.is_available() else "cpu")
     print('Using:', device)
     eeg_dir = eeg_directory
     eye_dir = eye_directory
