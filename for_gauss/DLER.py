@@ -25,8 +25,8 @@ def create_log_dir():
 def run_nn(eeg_directory, eye_directory, lr=None):
     if lr != None:
         learning_rate = lr
-    cv =3
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    cv = 3
+    device = torch.device("cuda:1" if torch.cuda.is_available() else "cpu")
     print('Using:', device)
     eeg_dir = eeg_directory
     eye_dir = eye_directory
@@ -140,8 +140,10 @@ def run_nn(eeg_directory, eye_directory, lr=None):
                         
                         train_loss.append(predict_loss_train)
                         validation_loss.append(predict_loss_test)
+
                         early_stopping = EarlyStopping(tolerance=5, min_delta=10)
                         early_stopping(predict_loss_train, predict_loss_test)
+
                         i += 1 
                         if early_stopping.early_stop:
                             print("We are at epoch:", i)
