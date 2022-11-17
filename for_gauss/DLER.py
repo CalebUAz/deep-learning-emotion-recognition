@@ -22,11 +22,16 @@ def create_log_dir():
     if not flag2:
         os.makedirs(path_trained_model)
 
-def run_nn(eeg_directory, eye_directory, lr=None):
+def run_nn(eeg_directory, eye_directory, lr=None, bs=None):
     if lr != None:
         learning_rate = lr
+   
+    if bs != None:
+        batch_size = bs
+
     cv = 3
-    device = torch.device("cuda:0,1" if torch.cuda.is_available() else "cpu")
+
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print('Using:', device)
     eeg_dir = eeg_directory
     eye_dir = eye_directory
@@ -143,7 +148,7 @@ def run_nn(eeg_directory, eye_directory, lr=None):
 
                         early_stopping = EarlyStopping(tolerance=5, min_delta=10)
                         early_stopping(predict_loss_train, predict_loss_test)
-
+                        
                         i += 1 
                         if early_stopping.early_stop:
                             print("We are at epoch:", i)
@@ -185,11 +190,18 @@ if __name__ == "__main__":
         required=False, 
         type=float,
         help="Enter a valid learning rate for the network")
+    parser.add_argument(
+        '--bs',
+        default=False,
+        required=False, 
+        type=int,
+        help="Enter a valid batch size for the network")
 
     arg = parser.parse_args()
     eeg_directory = arg.p1
     eye_directory = arg.p2
     lr = arg.lr
+    bs = arg.bs
 
     create_log_dir()
-    run_nn(eeg_directory, eye_directory, lr)
+    run_nn(eeg_directory, eye_directory, lr, bs)
