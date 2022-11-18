@@ -98,8 +98,8 @@ def run_nn(eeg_directory, eye_directory, lr=None, bs=None):
                     print(layer_sizes)
                     mymodel = DCCA_AM(eeg_input_dim, eye_input_dim, layer_sizes, layer_sizes, output_dim, emotion_categories, device).to(device)
                     optimizer_classifier = torch.optim.RMSprop(mymodel.parameters(), lr=learning_rate)
-                    optimizer_model1 = torch.optim.RMSprop(iter(list(mymodel.parameters())[0:8]), lr=learning_rate/2)
-                    optimizer_model2 = torch.optim.RMSprop(iter(list(mymodel.parameters())[8:16]), lr=learning_rate/2)
+                    optimizer_model1 = torch.optim.RMSprop(iter(list(mymodel.parameters())[0:8]), lr=learning_rate)
+                    optimizer_model2 = torch.optim.RMSprop(iter(list(mymodel.parameters())[8:16]), lr=learning_rate)
                     class_loss_func = nn.CrossEntropyLoss()
                     for epoch in range(epochs):
                         mymodel.train()
