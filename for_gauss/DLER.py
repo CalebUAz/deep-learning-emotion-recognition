@@ -93,7 +93,7 @@ def run_nn(eeg_directory, eye_directory, lr=None, bs=None):
                     best_test_res['true_label'] = None
                     best_test_res['layer_size'] = None
                     # try 100 combinations of different hidden units
-                    layer_sizes = [np.random.randint(100,200), np.random.randint(20,50), output_dim]
+                    layer_sizes = [np.random.randint(50,200), np.random.randint(50,200), output_dim]
                     logging.info('{}-{}'.format(layer_sizes[0], layer_sizes[1]))
                     print(layer_sizes)
                     mymodel = DCCA_AM(eeg_input_dim, eye_input_dim, layer_sizes, layer_sizes, output_dim, emotion_categories, device).to(device)
@@ -133,6 +133,7 @@ def run_nn(eeg_directory, eye_directory, lr=None, bs=None):
                             optimizer_model1.step()
                             optimizer_model2.step()
                             optimizer_classifier.step()
+
                         # for every epoch, evaluate the model on both train and test set
                         mymodel.eval()
                         predict_out_train, cca_loss_train, _, _, _, _, _, _  = mymodel(train_eeg, train_eye)
@@ -205,3 +206,5 @@ if __name__ == "__main__":
 
     create_log_dir()
     run_nn(eeg_directory, eye_directory, lr, bs)
+
+    # python3 DLER.py --p1 ~/deep-learning-emotion-recognition/Dataset/SEED-V/EEG_DE_features/ --p2 ~/deep-learning-emotion-recognition/Dataset/SEED-V/Eye_movement_features/ --lr 0.0005 --bs 300
