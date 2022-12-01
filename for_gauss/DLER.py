@@ -210,7 +210,7 @@ if __name__ == "__main__":
         '--gpu',
         default="cuda:1",
         required=False, 
-        type=int,
+        type=str,
         help="0 or 1")
 
     arg = parser.parse_args()
