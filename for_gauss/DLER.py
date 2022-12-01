@@ -156,6 +156,7 @@ def run_nn(eeg_directory, eye_directory, lr=None, bs=None):
                             break
                         
                         if accuracy_test > best_test_res['acc']:
+                            print('Accuracy improved from {} to {}'.format(accuracy_test, best_test_res) )
                             best_test_res['acc'] = accuracy_test
                             best_test_res['layer_size'] = layer_sizes
                             best_test_res['predict_proba'] = predict_out_test.detach().cpu().data
@@ -164,9 +165,11 @@ def run_nn(eeg_directory, eye_directory, lr=None, bs=None):
                             best_test_res['transformed_eye'] = output_2_test.detach().cpu().data
                             best_test_res['alpha'] = attention_weight_test
                             best_test_res['true_label'] = test_label.detach().cpu().data
+                            torch.cuda.empty_cache()
+                            print('Cuda cache cleared!')
 
-                        print('Epoch: {} -- Train CCA loss is: {} -- Train loss: {} -- Train accuracy: {}'.format(epoch, cca_loss_train, predict_loss_train.data, accuracy_train))
-                        print('Epoch: {} -- Test CCA loss is: {} -- Test loss: {} -- Test accuracy: {}'.format(epoch, cca_loss_test, predict_loss_test.data, accuracy_test))
+                        print('Hyperchoose Itr: {} -- Epoch: {} -- Train CCA loss is: {} -- Train loss: {} -- Train accuracy: {}'.format(hyper_choose, epoch, cca_loss_train, predict_loss_train.data, accuracy_train))
+                        print('Hyperchoose Itr: {} -- Epoch: {} -- Test CCA loss is: {} -- Test loss: {} -- Test accuracy: {}'.format(hyper_choose, epoch, cca_loss_test, predict_loss_test.data, accuracy_test))
                         print('\n')
                         logging.info('\tTrain\t{}\t{}\t{}\t{}'.format(epoch, cca_loss_train, predict_loss_train.data, accuracy_train))
                         logging.info('\tTest\t{}\t{}\t{}\t{}'.format(epoch, cca_loss_test, predict_loss_test.data, accuracy_test))
