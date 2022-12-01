@@ -22,7 +22,7 @@ def create_log_dir():
     if not flag2:
         os.makedirs(path_trained_model)
 
-def run_nn(eeg_directory, eye_directory, lr=None, bs=None, gpu):
+def run_nn(eeg_directory, eye_directory, gpu, lr=None, bs=None):
     if lr != None:
         learning_rate = lr
    
@@ -211,7 +211,7 @@ if __name__ == "__main__":
         default="cuda:1",
         required=False, 
         type=str,
-        help="0 or 1")
+        help="cuda:0 or cuda:1")
 
     arg = parser.parse_args()
     eeg_directory = arg.p1
@@ -221,6 +221,6 @@ if __name__ == "__main__":
     gpu = arg.gpu
 
     create_log_dir()
-    run_nn(eeg_directory, eye_directory, lr, bs, gpu)
+    run_nn(eeg_directory, eye_directory, gpu, lr, bs)
 
     # python3 DLER.py --p1 ~/deep-learning-emotion-recognition/Dataset/SEED-V/EEG_DE_features/ --p2 ~/deep-learning-emotion-recognition/Dataset/SEED-V/Eye_movement_features/ --lr 0.0005 --bs 300
