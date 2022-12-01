@@ -22,16 +22,19 @@ def create_log_dir():
     if not flag2:
         os.makedirs(path_trained_model)
 
-def run_nn(eeg_directory, eye_directory, lr=None, bs=None):
+def run_nn(eeg_directory, eye_directory, lr=None, bs=None, gpu):
     if lr != None:
         learning_rate = lr
    
     if bs != None:
         batch_size = bs
+    
+    if gpu != "cuda:1":
+        gpu = "cuda:0"
 
     cv = 3
 
-    device = torch.device("cuda:1" if torch.cuda.is_available() else "cpu")
+    device = torch.device(gpu if torch.cuda.is_available() else "cpu")
     print('Using:', device)
     eeg_dir = eeg_directory
     eye_dir = eye_directory
@@ -195,6 +198,7 @@ if __name__ == "__main__":
         required=False, 
         type=float,
         help="Enter a valid learning rate for the network")
+
     parser.add_argument(
         '--bs',
         default=False,
@@ -202,13 +206,21 @@ if __name__ == "__main__":
         type=int,
         help="Enter a valid batch size for the network")
 
+    parser.add_argument(
+        '--gpu',
+        default="cuda:1",
+        required=False, 
+        type=int,
+        help="0 or 1")
+
     arg = parser.parse_args()
     eeg_directory = arg.p1
     eye_directory = arg.p2
     lr = arg.lr
     bs = arg.bs
+    gpu = arg.gpu
 
     create_log_dir()
-    run_nn(eeg_directory, eye_directory, lr, bs)
+    run_nn(eeg_directory, eye_directory, lr, bs, gpu)
 
     # python3 DLER.py --p1 ~/deep-learning-emotion-recognition/Dataset/SEED-V/EEG_DE_features/ --p2 ~/deep-learning-emotion-recognition/Dataset/SEED-V/Eye_movement_features/ --lr 0.0005 --bs 300
