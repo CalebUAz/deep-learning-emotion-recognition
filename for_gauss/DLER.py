@@ -172,6 +172,7 @@ def run_nn(eeg_directory, eye_directory, lr=None, bs=None):
                         logging.info('\tTest\t{}\t{}\t{}\t{}'.format(epoch, cca_loss_test, predict_loss_test.data, accuracy_test))
 
                     pickle.dump(best_test_res, open( os.path.join(path_trained_model, f_id[:-8]+'_'+str(hyper_choose)), 'wb'  ))
+                    torch.cuda.empty_cache()
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
