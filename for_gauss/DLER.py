@@ -156,7 +156,7 @@ def run_nn(eeg_directory, eye_directory, lr=None, bs=None):
                             break
                         
                         if accuracy_test > best_test_res['acc']:
-                            print('Accuracy improved from {} to {}'.format(accuracy_test, best_test_res) )
+                            print('Accuracy improved from {} to {}'.format(best_test_res['acc'], accuracy_test) )
                             best_test_res['acc'] = accuracy_test
                             best_test_res['layer_size'] = layer_sizes
                             best_test_res['predict_proba'] = predict_out_test.detach().cpu().data
