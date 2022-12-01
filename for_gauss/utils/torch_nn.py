@@ -86,7 +86,7 @@ class TransformLayers(nn.Module):
                 layers.append(nn.Sequential(
                     #nn.BatchNorm1d(num_features=layer_sizes[l_id], affine=False),
                     nn.Linear(layer_sizes[l_id], layer_sizes[l_id+1]),
-                    ))
+                    )) 
             else:
                 layers.append(nn.Sequential(
                     nn.Linear(layer_sizes[l_id], layer_sizes[l_id+1]),
