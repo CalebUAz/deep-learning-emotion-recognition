@@ -201,7 +201,7 @@ if __name__ == "__main__":
 
     parser.add_argument(
         '--bs',
-        default=False,
+        default=batch_size,
         required=False, 
         type=int,
         help="Enter a valid batch size for the network")
